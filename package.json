@@ -5,9 +5,9 @@
   "dependencies": {
     "beefy": "^2.1.5",
     "browserify": "^12.0.1",
+    "glslify": "^6.1.0",
     "glslify-promise": "^1.0.1",
     "is-browser": "^2.0.1",
-    "primitive-cube": "^1.0.2",
     "pex-cam": "^2.4.3",
     "pex-color": "^1.1.1",
     "pex-context": "^2.1.2",
@@ -15,10 +15,11 @@
     "pex-geom": "^2.0.1",
     "pex-io": "^1.5.3",
     "pex-math": "^2.1.0",
-    "pex-sys": "^1.7.0"
+    "pex-sys": "^1.7.0",
+    "primitive-cube": "^1.0.2"
   },
   "scripts": {
-    "start": "beefy main.js:main.web.js --open -- -i plask -g glslify-promise/transform",
-    "build": "browserify main.js -i plask -g glslify-promise/transform -o main.web.js"
+    "start": "beefy main.js:main.web.js --open -- -i plask -t glslify",
+    "build": "browserify main.js -i plask -t glslify -o main.web.js"
   }
 }
