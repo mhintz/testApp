@@ -8,6 +8,9 @@ const mat3 = require('pex-math/mat3');
 
 const ctx = createContext();
 
+const screenWidth = ctx.gl.canvas.width;
+const screenHeight = ctx.gl.canvas.height;
+
 const camera = createCamera({
   fov: Math.PI / 4,
   aspect: ctx.gl.canvas.width / ctx.gl.canvas.height,
@@ -35,7 +38,14 @@ function flatten(arr) {
     return out;
 }
 
-const cube = createCube();
+const cubeMesh = (() => {
+    const cubeGeom = createCube();
+    return {
+        positions: ctx.vertexBuffer(cubeGeom.positions),
+        normals: ctx.vertexBuffer(cubeGeom.normals),
+        indices: ctx.indexBuffer(flatten(cubeGeom.cells))
+    };
+})();
 
 const drawCubeCmd = {
     pipeline: ctx.pipeline({
@@ -45,10 +55,10 @@ const drawCubeCmd = {
         primitive: ctx.Primitive.Triangles
     }),
     attributes: {
-        aPosition: ctx.vertexBuffer(cube.positions),
-        aNormal: ctx.vertexBuffer(cube.normals),
+        aPosition: cubeMesh.positions,
+        aNormal: cubeMesh.normals
     },
-    indices: ctx.indexBuffer(flatten(cube.cells)),
+    indices: cubeMesh.indices,
     uniforms: {
         uProjectionMatrix: camera.projectionMatrix,
         uViewMatrix: camera.viewMatrix,
@@ -58,7 +68,33 @@ const drawCubeCmd = {
     }
 }
 
+const drawCubeLines = {
+    pipeline: ctx.pipeline({
+        vert: VERT,
+        frag: FRAG,
+        depthTest: true,
+        primitive: ctx.Primitive.Lines
+    }),
+    attributes: {
+        aPosition: cubeMesh.positions,
+        aNormal: cubeMesh.normals
+    },
+    indices: cubeMesh.indices,
+    uniforms: {
+        uProjectionMatrix: camera.projectionMatrix,
+        uViewMatrix: camera.viewMatrix,
+        uModelMatrix: mat4.create(),
+        uNormalMatrix: mat3.fromMat4(mat3.create(), camera.invViewMatrix),
+        uColor: [1, 1, 1, 1]
+    }
+}
+
+const glowTexture = ctx.texture2D({
+    width: 
+})
+
 ctx.frame(function() {
     ctx.submit(clearCmd);
-    ctx.submit(drawCubeCmd);
+    // ctx.submit(drawCubeCmd);
+    ctx.submit(drawCubeLines);
 });
