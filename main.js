@@ -90,8 +90,9 @@ const drawCubeLines = {
 }
 
 const glowTexture = ctx.texture2D({
-    width: 
-})
+    width: screenWidth,
+    height: screenHeight
+});
 
 ctx.frame(function() {
     ctx.submit(clearCmd);

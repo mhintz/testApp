@@ -8,6 +8,7 @@
     "glslify": "^6.1.0",
     "glslify-promise": "^1.0.1",
     "is-browser": "^2.0.1",
+    "lodash": "*",
     "pex-cam": "^2.4.3",
     "pex-color": "^1.1.1",
     "pex-context": "^2.1.2",
@@ -20,6 +21,7 @@
   },
   "scripts": {
     "start": "beefy main.js:main.web.js --open -- -i plask -t glslify",
-    "build": "browserify main.js -i plask -t glslify -o main.web.js"
+    "build": "browserify main.js -i plask -t glslify -o main.web.js",
+    "attractor": "beefy attractor.js:attractor.web.js --open -- -i plask -t glslify"
   }
 }
